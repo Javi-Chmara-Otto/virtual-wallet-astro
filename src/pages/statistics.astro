@@ -1,0 +1,427 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Datos de ejemplo para las estadísticas
+const monthlyData = {
+    income: 4500,
+    expenses: 2800,
+    savings: 1700,
+    savingsPercentage: 37.8,
+};
+
+const topCategories = [
+    { name: "Comida", amount: 850, percentage: 30.4 },
+    { name: "Transporte", amount: 450, percentage: 16.1 },
+    { name: "Entretenimiento", amount: 380, percentage: 13.6 },
+    { name: "Servicios", amount: 320, percentage: 11.4 },
+    { name: "Otros", amount: 800, percentage: 28.5 },
+];
+
+// Agregamos datos de cambios respecto al mes anterior
+const changes = {
+    income: { amount: 300, percentage: 7.1, increase: true },
+    expenses: { amount: -150, percentage: -5.1, increase: false },
+    savings: { amount: 450, percentage: 36.0, increase: true },
+};
+---
+
+<Layout title="Estadísticas - Mi Billetera Virtual" currentPath="/statistics">
+    <div class="space-y-6">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Estadísticas</h1>
+            <select
+                class="px-4 py-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+                <option value="current">Este mes</option>
+                <option value="last">Mes anterior</option>
+                <option value="3months">Últimos 3 meses</option>
+                <option value="6months">Últimos 6 meses</option>
+                <option value="year">Este año</option>
+            </select>
+        </div>
+
+        <!-- Tarjetas de Resumen -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Ingresos -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-green-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Ingresos</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            ${monthlyData.income.toLocaleString()}
+                        </p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span
+                                class={`flex items-center gap-0.5 text-sm ${
+                                    changes.income.increase
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                }`}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d={changes.income.increase
+                                            ? "M7 11l5-5m0 0l5 5m-5-5v12"
+                                            : "M17 13l-5 5m0 0l-5-5m5 5V6"}
+                                    ></path>
+                                </svg>
+                                {Math.abs(changes.income.percentage)}%
+                            </span>
+                            <span class="text-sm text-gray-500"
+                                >vs. mes anterior</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gastos -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-red-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Gastos</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            ${monthlyData.expenses.toLocaleString()}
+                        </p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span
+                                class={`flex items-center gap-0.5 text-sm ${
+                                    !changes.expenses.increase
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                }`}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d={!changes.expenses.increase
+                                            ? "M7 11l5-5m0 0l5 5m-5-5v12"
+                                            : "M17 13l-5 5m0 0l-5-5m5 5V6"}
+                                    ></path>
+                                </svg>
+                                {Math.abs(changes.expenses.percentage)}%
+                            </span>
+                            <span class="text-sm text-gray-500"
+                                >vs. mes anterior</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ahorros -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-purple-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Ahorros</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            ${monthlyData.savings.toLocaleString()}
+                        </p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span
+                                class={`flex items-center gap-0.5 text-sm ${
+                                    changes.savings.increase
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                }`}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d={changes.savings.increase
+                                            ? "M7 11l5-5m0 0l5 5m-5-5v12"
+                                            : "M17 13l-5 5m0 0l-5-5m5 5V6"}
+                                    ></path>
+                                </svg>
+                                {Math.abs(changes.savings.percentage)}%
+                            </span>
+                            <span class="text-sm text-gray-500"
+                                >vs. mes anterior</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Porcentaje de Ahorro -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">% Ahorro</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            {monthlyData.savingsPercentage}%
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Gráfico de Gastos por Categoría -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        Gastos por Categoría
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="h-64">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Tendencias -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        Tendencias de Gastos
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="h-64">
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Categorías de Gastos -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="p-6 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    Top Categorías de Gastos
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    {
+                        topCategories.map((category) => (
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-gray-800 font-medium">
+                                        {category.name}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-48 bg-gray-100 rounded-full h-2">
+                                        <div
+                                            class="bg-purple-600 h-2 rounded-full"
+                                            style={`width: ${category.percentage}%`}
+                                        />
+                                    </div>
+                                    <span class="text-gray-500 w-20 text-right">
+                                        ${category.amount}
+                                    </span>
+                                    <span class="text-gray-400 w-16 text-right">
+                                        {category.percentage}%
+                                    </span>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    import Chart from "chart.js/auto";
+
+    // Configuración y datos para los gráficos
+    const expensesData = {
+        labels: [
+            "Comida",
+            "Transporte",
+            "Entretenimiento",
+            "Servicios",
+            "Otros",
+        ],
+        datasets: [
+            {
+                data: [850, 450, 380, 320, 800],
+                backgroundColor: [
+                    "#818CF8", // Indigo
+                    "#34D399", // Emerald
+                    "#F472B6", // Pink
+                    "#FBBF24", // Amber
+                    "#9CA3AF", // Gray
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const trendsData = {
+        labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun"],
+        datasets: [
+            {
+                label: "Gastos",
+                data: [2100, 2400, 1800, 2600, 2200, 2800],
+                borderColor: "#818CF8",
+                backgroundColor: "rgba(129, 140, 248, 0.1)",
+                fill: true,
+            },
+        ],
+    };
+
+    // Opciones comunes para los gráficos
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+    };
+
+    // Crear gráficos cuando el DOM esté listo
+    document.addEventListener("DOMContentLoaded", () => {
+        // Gráfico circular
+        new Chart(document.getElementById("expensesChart"), {
+            type: "doughnut",
+            data: expensesData,
+            options: {
+                ...commonOptions,
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                    },
+                },
+            },
+        });
+
+        // Gráfico de líneas
+        new Chart(document.getElementById("trendsChart"), {
+            type: "line",
+            data: trendsData,
+            options: {
+                ...commonOptions,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            drawBorder: false,
+                        },
+                        ticks: {
+                            callback: (value) => `$${value}`,
+                        },
+                    },
+                    x: {
+                        grid: {
+                            display: false,
+                        },
+                    },
+                },
+            },
+        });
+    });
+</script>

@@ -1,0 +1,248 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Datos de ejemplo para las transacciones
+const transactions = [
+    {
+        id: 1,
+        description: "Supermercado Local",
+        amount: -156.5,
+        date: "2024-03-23",
+        category: "Comida",
+        type: "expense",
+        status: "completed",
+    },
+    {
+        id: 2,
+        description: "Depósito de Salario",
+        amount: 2800.0,
+        date: "2024-03-22",
+        category: "Ingresos",
+        type: "income",
+        status: "completed",
+    },
+    {
+        id: 3,
+        description: "Netflix",
+        amount: -15.99,
+        date: "2024-03-21",
+        category: "Entretenimiento",
+        type: "expense",
+        status: "pending",
+    },
+    {
+        id: 4,
+        description: "Transferencia recibida",
+        amount: 250.0,
+        date: "2024-03-20",
+        category: "Transferencia",
+        type: "income",
+        status: "completed",
+    },
+    {
+        id: 5,
+        description: "Gasolina",
+        amount: -45.0,
+        date: "2024-03-19",
+        category: "Transporte",
+        type: "expense",
+        status: "completed",
+    },
+];
+---
+
+<Layout
+    title="Transacciones - Mi Billetera Virtual"
+    currentPath="/transactions"
+>
+    <div class="space-y-6">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Transacciones</h1>
+            <button
+                class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Nueva Transacción
+            </button>
+        </div>
+
+        <!-- Sección de Búsqueda y Filtros -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="p-6">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <!-- Buscador -->
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                placeholder="Buscar transacción..."
+                                class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                ></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="flex gap-3">
+                        <select
+                            class="px-4 py-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                            <option value="">Todas las categorías</option>
+                            <option value="income">Ingresos</option>
+                            <option value="expense">Gastos</option>
+                            <option value="transfer">Transferencias</option>
+                        </select>
+
+                        <select
+                            class="px-4 py-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                            <option value="">Último mes</option>
+                            <option value="3months">Últimos 3 meses</option>
+                            <option value="6months">Últimos 6 meses</option>
+                            <option value="year">Último año</option>
+                        </select>
+
+                        <button
+                            class="px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                ></path>
+                            </svg>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de Últimas Transacciones -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="p-6 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    Últimas Transacciones
+                </h3>
+            </div>
+            <div class="p-6">
+                <!-- Aquí va tu código existente del historial de transacciones -->
+                <div class="space-y-4">
+                    {
+                        transactions.map((transaction) => (
+                            <div class="flex items-center justify-between py-3 hover:bg-gray-50 px-4 rounded-lg transition-colors">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                            transaction.type === "income"
+                                                ? "bg-green-100 text-green-600"
+                                                : "bg-red-100 text-red-600"
+                                        }`}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-5 w-5"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d={
+                                                    transaction.type ===
+                                                    "income"
+                                                        ? "M7 11l5-5m0 0l5 5m-5-5v12"
+                                                        : "M17 13l-5 5m0 0l-5-5m5 5V6"
+                                                }
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-800">
+                                            {transaction.description}
+                                        </p>
+                                        <div class="flex items-center gap-2 text-sm text-gray-500">
+                                            <span>
+                                                {new Date(
+                                                    transaction.date,
+                                                ).toLocaleDateString()}
+                                            </span>
+                                            <span>•</span>
+                                            <span class="px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-800">
+                                                {transaction.category}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p
+                                        class={`font-medium ${
+                                            transaction.type === "income"
+                                                ? "text-green-600"
+                                                : "text-red-600"
+                                        }`}
+                                    >
+                                        {transaction.type === "income"
+                                            ? "+"
+                                            : "-"}
+                                        $
+                                        {Math.abs(transaction.amount).toFixed(
+                                            2,
+                                        )}
+                                    </p>
+                                    <span
+                                        class={`text-xs px-2 py-0.5 rounded-full ${
+                                            transaction.status === "completed"
+                                                ? "bg-green-100 text-green-800"
+                                                : "bg-yellow-100 text-yellow-800"
+                                        }`}
+                                    >
+                                        {transaction.status === "completed"
+                                            ? "Completado"
+                                            : "Pendiente"}
+                                    </span>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

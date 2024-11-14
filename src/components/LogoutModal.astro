@@ -1,0 +1,113 @@
+<div
+    id="logoutModal"
+    class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+>
+    <div
+        class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white"
+    >
+        <div class="mt-3 text-center">
+            <div
+                class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-red-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    ></path>
+                </svg>
+            </div>
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">
+                Cerrar Sesión
+            </h3>
+            <div class="mt-2 px-7 py-3">
+                <p class="text-sm text-gray-500">
+                    ¿Estás seguro que deseas cerrar sesión?
+                </p>
+            </div>
+            <div class="flex justify-center gap-4 mt-4">
+                <button
+                    id="cancelLogout"
+                    class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg"
+                >
+                    Cancelar
+                </button>
+                <button
+                    id="confirmLogout"
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg"
+                >
+                    Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    // Esperar a que el DOM esté completamente cargado
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtener referencias a los elementos
+        const modal = document.getElementById("logoutModal");
+        const logoutButtons = document.querySelectorAll("[data-logout-button]");
+        const cancelButton = document.getElementById("cancelLogout");
+        const confirmButton = document.getElementById("confirmLogout");
+
+        // Verificar que todos los elementos existan
+        if (!modal || !cancelButton || !confirmButton) {
+            console.error("No se encontraron todos los elementos necesarios");
+            return;
+        }
+
+        // Función para mostrar el modal
+        function showModal() {
+            modal.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+        }
+
+        // Función para ocultar el modal
+        function hideModal() {
+            modal.classList.add("hidden");
+            document.body.style.overflow = "auto";
+        }
+
+        // Agregar event listeners a los botones de cerrar sesión
+        logoutButtons.forEach((button) => {
+            button.addEventListener("click", (e) => {
+                e.preventDefault();
+                showModal();
+            });
+        });
+
+        // Event listener para el botón cancelar
+        cancelButton.addEventListener("click", hideModal);
+
+        // Event listener para el botón confirmar
+        confirmButton.addEventListener("click", () => {
+            console.log("Cerrando sesión...");
+            // Aquí puedes agregar la lógica para cerrar sesión
+            // Por ejemplo: window.location.href = '/logout';
+            hideModal();
+        });
+
+        // Cerrar modal al hacer clic fuera
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        // Cerrar modal con la tecla Escape
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+                hideModal();
+            }
+        });
+    });
+</script>

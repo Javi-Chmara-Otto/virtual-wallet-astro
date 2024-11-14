@@ -1,0 +1,410 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+// Datos de ejemplo para los presupuestos
+const budgets = [
+    {
+        category: "Comida",
+        budgeted: 1000,
+        spent: 850,
+        remaining: 150,
+        percentage: 85,
+        icon: "M3 3a1 1 0 000 2h11a1 1 0 100-2H3zM3 7a1 1 0 000 2h5a1 1 0 000-2H3zM3 11a1 1 0 100 2h4a1 1 0 100-2H3zM13 16a1 1 0 102 0v-5.586l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 101.414 1.414L13 10.414V16z",
+    },
+    {
+        category: "Transporte",
+        budgeted: 500,
+        spent: 450,
+        remaining: 50,
+        percentage: 90,
+        icon: "M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1zM8 7a1 1 0 011 1v3a1 1 0 11-2 0V8a1 1 0 011-1z",
+    },
+    {
+        category: "Entretenimiento",
+        budgeted: 400,
+        spent: 380,
+        remaining: 20,
+        percentage: 95,
+        icon: "M15 5v2a5 5 0 01-5 5H9v2h1a3 3 0 110 6H9l-1 2v-2a5 5 0 01-5-5H2v-2h1a3 3 0 110-6H2V5h1a5 5 0 015-5v2a3 3 0 110 6V5h2zm-5-3a3 3 0 100 6 3 3 0 000-6z",
+    },
+    {
+        category: "Servicios",
+        budgeted: 350,
+        spent: 320,
+        remaining: 30,
+        percentage: 91,
+        icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+    },
+];
+
+// Datos de resumen mensual
+const monthlyData = {
+    totalBudget: 2250,
+    totalSpent: 2000,
+    totalRemaining: 250,
+    percentageUsed: 88.9,
+};
+---
+
+<Layout title="Presupuesto - Mi Billetera Virtual" currentPath="/budget">
+    <div class="space-y-6">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">
+                Presupuesto Mensual
+            </h1>
+            <button
+                class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Nuevo Presupuesto
+            </button>
+        </div>
+
+        <!-- Tarjetas de Resumen -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Presupuesto Total -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-purple-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Presupuesto Total</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            ${monthlyData.totalBudget.toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gastado -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-red-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Gastado</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            ${monthlyData.totalSpent.toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restante -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-green-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Restante</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            ${monthlyData.totalRemaining.toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Porcentaje Usado -->
+            <div
+                class="bg-white rounded-xl shadow-sm border border-gray-100 p-6"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-6 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+                            ></path>
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">% Usado</p>
+                        <p class="text-2xl font-bold text-gray-800">
+                            {monthlyData.percentageUsed}%
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos de Distribución -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Gráfico Circular -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        Distribución del Presupuesto
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="h-64">
+                        <canvas id="budgetDistribution"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leyenda y Detalles -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 border-b border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        Detalles de Distribución
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        {
+                            budgets.map((budget, index) => (
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-3 h-3 rounded-full"
+                                            style={`background-color: var(--chart-color-${index})`}
+                                        />
+                                        <span class="text-gray-800">
+                                            {budget.category}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-gray-600">
+                                            ${budget.budgeted.toLocaleString()}
+                                        </span>
+                                        <span class="text-gray-500">
+                                            {(
+                                                (budget.budgeted /
+                                                    monthlyData.totalBudget) *
+                                                100
+                                            ).toFixed(1)}
+                                            %
+                                        </span>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Presupuestos por Categoría -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+            <div class="p-6 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    Presupuestos por Categoría
+                </h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-6">
+                    {
+                        budgets.map((budget) => (
+                            <div class="flex flex-col">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="h-6 w-6 text-purple-600"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d={budget.icon}
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">
+                                                {budget.category}
+                                            </h4>
+                                            <p class="text-sm text-gray-500">
+                                                ${budget.spent.toLocaleString()}{" "}
+                                                de $
+                                                {budget.budgeted.toLocaleString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-gray-800">
+                                            Restante
+                                        </p>
+                                        <p
+                                            class={`text-sm ${budget.remaining > 0 ? "text-green-600" : "text-red-600"}`}
+                                        >
+                                            ${budget.remaining.toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-full h-2.5">
+                                    <div
+                                        class={`h-2.5 rounded-full ${
+                                            budget.percentage >= 90
+                                                ? "bg-red-600"
+                                                : budget.percentage >= 75
+                                                  ? "bg-yellow-600"
+                                                  : "bg-green-600"
+                                        }`}
+                                        style={`width: ${budget.percentage}%`}
+                                    />
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    :root {
+        --chart-color-0: #818cf8;
+        --chart-color-1: #34d399;
+        --chart-color-2: #f472b6;
+        --chart-color-3: #fbbf24;
+    }
+</style>
+
+<script is:client type="module">
+    import Chart from "/node_modules/chart.js/auto/auto.js";
+
+    const ctx = document.getElementById("budgetDistribution");
+
+    const data = {
+        labels: ["Comida", "Transporte", "Entretenimiento", "Servicios"],
+        datasets: [
+            {
+                data: [1000, 500, 400, 350],
+                backgroundColor: [
+                    "#818CF8", // Indigo
+                    "#34D399", // Emerald
+                    "#F472B6", // Pink
+                    "#FBBF24", // Amber
+                ],
+                borderWidth: 0,
+                hoverOffset: 4,
+            },
+        ],
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        try {
+            new Chart(ctx, {
+                type: "doughnut",
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: "65%",
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce(
+                                        (a, b) => a + b,
+                                        0,
+                                    );
+                                    const percentage = (
+                                        (value / total) *
+                                        100
+                                    ).toFixed(1);
+                                    return `$${value.toLocaleString()} (${percentage}%)`;
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        } catch (error) {
+            console.error("Error al crear el gráfico:", error);
+        }
+    });
+</script>
